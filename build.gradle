@@ -1,28 +1,70 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.4'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id "com.vanniktech.maven.publish" version "0.28.0"
+    id 'signing'
 }
 
 group = 'io.github.boeingmerryho'
-version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
+version = '1.0.1'
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+tasks.withType(Javadoc) {
+    options {
+        encoding 'UTF-8'
+    }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+signing {
+    sign publishing.publications
+}
+
+mavenPublishing {
+    signAllPublications()
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+    coordinates("io.github.boeingmerryho", "common-library", "1.0.1")
+
+    pom {
+        name = 'common-library'
+        description = 'BoeingMerryHo Common Library'
+        url = '<https://github.com/boeingmerryho/common-library>'
+
+        licenses {
+            license {
+                name = 'Apache License'
+                url = '<https://github.com/boeingmerryho/common-library/blob/master/LICENSE>'
+            }
+        }
+
+        developers {
+            developer {
+                id = 'jieonlee'
+                name = 'JiEon Lee'
+                email = 'dlwldjs7544@naver.com'
+            }
+        }
+
+        scm {
+            connection = 'scm:git:github.com/boeingmerryho/common-library.git'
+            developerConnection = 'scm:git:ssh://github.com:boeingmerryho/common-library.git'
+            url = '<https://github.com/boeingmerryho/common-library/tree/master>'
+        }
+    }
+}
+
+dependencies {
+    implementation 'org.springframework:spring-web:6.1.12'
+
+    // Spring Data JPA (Auditing 용)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.4.4'
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.38'
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
 }
