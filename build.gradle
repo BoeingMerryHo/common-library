@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'io.github.boeingmerryho'
-version = '1.0.1'
+version = '1.0.3'
 
 repositories {
     mavenCentral()
@@ -27,7 +27,7 @@ mavenPublishing {
     signAllPublications()
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
-    coordinates("io.github.boeingmerryho", "common-library", "1.0.1")
+    coordinates("io.github.boeingmerryho", "common-library", "1.0.3")
 
     pom {
         name = 'common-library'
@@ -43,8 +43,8 @@ mavenPublishing {
 
         developers {
             developer {
-                id = 'jieonlee'
-                name = 'JiEon Lee'
+                id = 'JieonLee'
+                name = 'Jieon Lee'
                 email = 'dlwldjs7544@naver.com'
             }
         }
@@ -61,7 +61,8 @@ dependencies {
     implementation 'org.springframework:spring-web:6.1.12'
 
     // Spring Data JPA (Auditing 용)
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.4.4'
+    implementation 'org.springframework.data:spring-data-commons:3.2.4'
+    implementation 'org.springframework.data:spring-data-jpa:3.2.4'
     implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
 
     // Lombok
