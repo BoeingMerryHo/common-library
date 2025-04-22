@@ -1,22 +1,26 @@
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
-    id 'java'
-    id "com.vanniktech.maven.publish" version "0.28.0"
+    id 'java-library'
     id 'signing'
+    id 'com.vanniktech.maven.publish' version '0.28.0'
 }
 
 group = 'io.github.boeingmerryho'
-version = '1.0.3'
+version = '1.1.2'
 
 repositories {
     mavenCentral()
 }
 
-tasks.withType(Javadoc) {
-    options {
-        encoding 'UTF-8'
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+}
+
+tasks.withType(Javadoc).configureEach {
+    options.encoding = 'UTF-8'
 }
 
 signing {
@@ -27,17 +31,17 @@ mavenPublishing {
     signAllPublications()
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
-    coordinates("io.github.boeingmerryho", "common-library", "1.0.3")
+    coordinates("io.github.boeingmerryho", "common-library", "1.1.2")
 
     pom {
         name = 'common-library'
         description = 'BoeingMerryHo Common Library'
-        url = '<https://github.com/boeingmerryho/common-library>'
+        url = 'https://github.com/boeingmerryho/common-library'
 
         licenses {
             license {
                 name = 'Apache License'
-                url = '<https://github.com/boeingmerryho/common-library/blob/master/LICENSE>'
+                url = 'https://github.com/boeingmerryho/common-library/blob/master/LICENSE'
             }
         }
 
@@ -50,9 +54,9 @@ mavenPublishing {
         }
 
         scm {
-            connection = 'scm:git:github.com/boeingmerryho/common-library.git'
-            developerConnection = 'scm:git:ssh://github.com:boeingmerryho/common-library.git'
-            url = '<https://github.com/boeingmerryho/common-library/tree/master>'
+            connection = 'scm:git:git://github.com/boeingmerryho/common-library.git'
+            developerConnection = 'scm:git:ssh://git@github.com/boeingmerryho/common-library.git'
+            url = 'https://github.com/boeingmerryho/common-library'
         }
     }
 }
@@ -60,10 +64,21 @@ mavenPublishing {
 dependencies {
     implementation 'org.springframework:spring-web:6.1.12'
 
-    // Spring Data JPA (Auditing 용)
+    // Interceptor
+    implementation 'org.springframework:spring-webmvc:6.1.14'
+    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+
+    // Spring Data (Auditing 등)
     implementation 'org.springframework.data:spring-data-commons:3.2.4'
     implementation 'org.springframework.data:spring-data-jpa:3.2.4'
     implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+
+    // QueryDSL
+    implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api:2.1.1"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api:3.1.0"
 
     // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.38'

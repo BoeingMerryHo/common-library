@@ -34,8 +34,8 @@ public abstract class BaseEntity {
 	@Column(updatable = false)
 	private Long createdBy;
 
-	@LastModifiedDate
 	@Column
+	@LastModifiedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime updatedAt;
 
